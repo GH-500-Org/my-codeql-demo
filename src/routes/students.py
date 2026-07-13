@@ -7,6 +7,7 @@ from services.student_service import (
     update_student,
     delete_student,
 )
+from db.database import search_students_by_name
 
 students_bp = Blueprint("students", __name__)
 
@@ -14,6 +15,13 @@ students_bp = Blueprint("students", __name__)
 @students_bp.route("/students", methods=["GET"])
 def list_students():
     return jsonify(get_all_students())
+
+
+@students_bp.route("/students/search", methods=["GET"])
+def search_students():
+    name = request.args.get("name", "")
+    results = search_students_by_name(name)
+    return jsonify(results)
 
 
 @students_bp.route("/students/<id>", methods=["GET"])
